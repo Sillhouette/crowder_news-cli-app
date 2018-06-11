@@ -1,8 +1,16 @@
+##
+# => Scraper scrapes the articles from the front page of www.louderwithcrowder.com
+#    Scrapes the data from each article to be displayed to the user via CLI
+##
 class CrowderNews::Scraper
+  # => url accessor
   attr_accessor :url
 
   @url = "https://www.louderwithcrowder.com"
 
+  ##
+  # => This method iniates the scrape from our website
+  ##
   def self.initiate_scrape
     CrowderNews::Article.create_from_collection(self.scrape_featured)
     CrowderNews::Article.create_from_collection(self.scrape_recent)
@@ -12,13 +20,9 @@ class CrowderNews::Scraper
     }
   end
 
-  def add_attributes_to_students
-    Student.all.each do |student|
-      attributes = Scraper.scrape_profile_page(BASE_PATH + student.profile_url)
-      student.add_student_attributes(attributes)
-    end
-  end
-
+  ##
+  # => Scrapes the featured articles from LwC
+  ##
   def self.scrape_featured
     doc = Nokogiri::HTML(open(@url))
     articles = []
@@ -34,6 +38,9 @@ class CrowderNews::Scraper
     articles
   end
 
+  ##
+  # => Scrapes the recent articles from LwC
+  ##
   def self.scrape_recent
     doc = Nokogiri::HTML(open(@url))
     articles = []
@@ -49,6 +56,9 @@ class CrowderNews::Scraper
     articles
   end
 
+  ##
+  # => Pulls the articles details from each article url so we can complete out Article objects
+  ##
   def self.scrape_details(article_url)
     doc = Nokogiri::HTML(open(article_url))
     article_info = {}
