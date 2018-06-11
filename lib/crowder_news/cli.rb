@@ -10,7 +10,10 @@ class CrowderNews::CLI
     puts "Today's news on Crowder: "
     @articles = CrowderNews::Article.today
     @articles.each.with_index(1) do |article, index|
-      puts "#{index}. #{article.title}"
+      puts "#{index}. #{article.article_type} - #{article.title}"
+      if(article.excerpt != "")
+        puts "    #{article.excerpt}"
+      end
     end
   end
 
