@@ -8,20 +8,21 @@ class CrowderNews::CLI
 
   def list_deals
     puts "Today's news on Crowder: "
-    @article = CrowderNews::Article.today
+    @articles = CrowderNews::Article.today
+    @articles.each.with_index(1) do |article, index|
+      puts "#{index}. #{article.title}"
+    end
   end
 
   def menu
     input = nil
-    while input != "exit"
+    while input != 'exit'
       puts "Enter the number of the article you want to see or type list to see the articles again or type exit: "
       input = gets.strip.downcase
-      case input
-      when "1"
-        puts "more info on article 1..."
-      when "2"
-        puts "more infor on article 2..."
-      when "list"
+      if input.to_i > 0
+        the_article = @articles[input.to_i - 1]
+        puts "#{the_article.title}"
+      elsif input == "list"
         list_deals
       else
         puts "Please type a valid command."
