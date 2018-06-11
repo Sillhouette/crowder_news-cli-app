@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require './lib/crowder_news'
+
+CrowderNews::CLI.new.call

@@ -1,5 +1,2 @@
-require "crowder_news/version"
-
-module CrowderNews
-  # Your code goes here...
-end
+require_relative "./crowder_news/version"
+require_relative './crowder_news/cli'
