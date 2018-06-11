@@ -11,4 +11,4 @@ require "crowder_news"
 # Pry.start
 
 require "irb"
-IRB.start(__FILE__)
+IRB.start

@@ -1,15 +1,14 @@
 class CrowderNews::CLI
 
   def call
-    list_deals;
-    menu;
+    list_deals
+    menu
     goodbye
   end
 
   def list_deals
     puts "Today's news on Crowder: "
-    puts "1. LGBT Activists Bully Twitter Founder for..."
-    puts "2. Socialist bernie sanders accuses trump of..."
+    @article = CrowderNews::Article.today
   end
 
   def menu
