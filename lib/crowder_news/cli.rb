@@ -1,20 +1,24 @@
 class CrowderNews::CLI
 
   def call
-    list_deals
+    list_articles
     menu
     goodbye
   end
 
-  def list_deals
+  def list_articles
     puts "Today's news on Crowder: "
-    @articles = CrowderNews::Article.today
+    @articles = CrowderNews::Article.all
     @articles.each.with_index(1) do |article, index|
       puts "#{index}. #{article.article_type} - #{article.title}"
       if(article.excerpt != "")
         puts "    #{article.excerpt}"
       end
     end
+  end
+
+  def list_details(article)
+    details = CrowderNews::Article.scrape_details(article.link)
   end
 
   def menu
@@ -24,9 +28,9 @@ class CrowderNews::CLI
       input = gets.strip.downcase
       if input.to_i > 0
         the_article = @articles[input.to_i - 1]
-        puts "#{the_article.title}"
+        list_details(the_article)
       elsif input == "list"
-        list_deals
+        list_articles
       else
         puts "Please type a valid command."
       end

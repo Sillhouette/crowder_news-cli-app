@@ -1,50 +1,34 @@
 class CrowderNews::Article
 
-  attr_accessor :title, :author, :date, :body, :URL, :article_link, :excerpt, :article_type
+  attr_accessor :title, :link, :excerpt, :type, :author, :date, :body, :twitter_links, :youtube_links
 
-  def self.today
-    #scrape crowder and return deals based on the data
-    self.scrape_article
+  @@all = []
+
+  def initialize(article_hash)
+    @title = article_hash[:title]
+    @link = article_hash[:link]
+    @excerpt = article_hash[:excerpt]
+    @type = article_hash[:type]
+
+    @@all << self;
   end
 
-  def self.scrape_article
-    articles = []
-
-    articles << self.scrape_featured
-    articles << self.scrape_recent
-    # Go to crowder, find the articles
-    #extract the properties
-    #instantiate an articles
-
-    articles
-  end
-
-  def self.scrape_featured
-    doc = Nokogiri::HTML(open("https://www.louderwithcrowder.com"))
-    this_article = self.new
-    doc.css("div.lwc-featured").each {|article|
-      article.css(".featured-box").each { |box|
-        this_article.title = box.css("h3.featured-title a").text
-        this_article.article_link = box.css("h3.featured-title a").attribute("href").value
-        this_article.excerpt = box.css("p.lwc-excerpt").text
-        this_article.article_type = "Featured"
-      }
+  def self.create_from_collection(articles_array)
+    articles_array.each { |article|
+      self.new(article)
     }
-    this_article
   end
 
-  def self.scrape_recent
-    doc = Nokogiri::HTML(open("https://www.louderwithcrowder.com"))
-    this_article = self.new
-    doc.css("div.lwc-recent").each {|article|
-      article.css(".recent-box").each { |box|
-        this_article.title = box.css("h3.recent-title a").text
-        this_article.article_link = box.css("h3.recent-title a").attribute("href").value
-        this_article.article_type = "Recent"
-        this_article.excerpt = ""
-      }
-    }
-    this_article
+  def self.add_details(details_hash)
+    @author = article_hash[:author]
+    @date = article_hash[:date]
+    @body = article_hash[:body]
+    @twitter_links = article_hash[:twitter_links]
+    @youtube_links = article_hash[:youtube_links]
+  end
+
+  def self.all
+    @@all;
   end
 
 end
