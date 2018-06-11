@@ -6,7 +6,7 @@ class CrowderNews::CLI
   attr_accessor :articles
 
   # => Intiates the program, scrapes the website and welcomes the user
-  def call
+  def initiate
     CrowderNews::Scraper.initiate_scrape
     puts "Welcome to Today on Crowder!"
     list_articles
@@ -17,26 +17,28 @@ class CrowderNews::CLI
   ##
   def list_articles
     input = nil
-    choices = "Choose one: recent, featured, or both"
+    choices = 'Choose one: recent, featured, or both. To exit type "exit".'
     puts choices
     input = gets.strip.downcase
     puts ""
     if input == "recent"
       puts "Recent Articles: "
-      @articles = CrowderNews::Article.recents
+      display_list(CrowderNews::Article.recents)
+      menu
     elsif input == "featured"
       puts "Featured Articles: "
-      @articles = CrowderNews::Article.featured
+      display_list(CrowderNews::Article.featured)
+      menu
     elsif input == "both"
       puts "All articles: "
-      @articles = CrowderNews::Article.all
-    else
-      puts choices
-    end
-    if @articles
-      display_list(@articles)
+      display_list(CrowderNews::Article.all)
       menu
+    elsif input == "exit"
+      goodbye
+    else
+      list_articles
     end
+
   end
 
   ##
@@ -49,6 +51,7 @@ class CrowderNews::CLI
         puts "    #{article.excerpt[0...103]}..."
       end
     end
+    puts ""
   end
 
   ##
@@ -56,17 +59,19 @@ class CrowderNews::CLI
   ##
   def menu
     input = nil
-    until input == 'exit'
-      puts "Enter the number of the article you want to see, type list to list the articles again or type exit: "
-      input = gets.strip.downcase
-      if input.to_i > 0
-        article = @articles[input.to_i - 1]
-        display_article(article)
-      elsif input == "list"
-        list_articles
-      end
+    puts "Enter the number of the article you want to see, type list to list the articles again or type exit: "
+    input = gets.strip.downcase
+    if input.to_i > 0 && input.to_i < @articles.length + 1
+      article = @articles[input.to_i - 1]
+      display_article(article)
+    elsif input == "list"
+      list_articles
+    elsif input == "exit"
+      goodbye
+    else
+      puts "Please make a valid selection."
+      menu
     end
-    goodbye
   end
 
   ##
@@ -87,15 +92,20 @@ class CrowderNews::CLI
         puts link
       }
     end
-    puts 'Press any key to choose a new article.'
+    puts 'Press any key to find another article or "exit" to exit.'
     input = gets.strip.downcase
-    list_articles
+    if input == "exit"
+      goodbye
+    else
+      list_articles
+    end
   end
 
   ##
   # => Tells the user goodbye and exits program
   ##
   def goodbye
+    puts ""
     puts "See you next time!"
   end
 
