@@ -2,19 +2,17 @@
 # => Scraper scrapes the articles from the front page of www.louderwithcrowder.com
 #    Scrapes the data from each article to be displayed to the user via CLI
 ##
-class CrowderNews::Scraper
-  # => url accessor
-  attr_accessor :url
+class Scraper
 
-  @url = "https://www.louderwithcrowder.com"
+  @@url = "https://www.louderwithcrowder.com"
 
   ##
   # => This method iniates the scrape from our website
   ##
   def self.initiate_scrape
-    CrowderNews::Article.create_from_collection(self.scrape_featured)
-    CrowderNews::Article.create_from_collection(self.scrape_recent)
-    CrowderNews::Article.all.each {|article|
+    Article.create_from_collection(self.scrape_featured)
+    Article.create_from_collection(self.scrape_recent)
+    Article.all.each {|article|
       details = self.scrape_details(article.link)
       article.add_details(details)
     }
@@ -24,7 +22,7 @@ class CrowderNews::Scraper
   # => Scrapes the featured articles from LwC
   ##
   def self.scrape_featured
-    doc = Nokogiri::HTML(open(@url))
+    doc = Nokogiri::HTML(open(@@url))
     articles = []
     doc.css("div.lwc-featured").each {|featured_article|
       featured_article.css(".featured-box").each { |box|
@@ -42,7 +40,7 @@ class CrowderNews::Scraper
   # => Scrapes the recent articles from LwC
   ##
   def self.scrape_recent
-    doc = Nokogiri::HTML(open(@url))
+    doc = Nokogiri::HTML(open(@@url))
     articles = []
     doc.css("div.lwc-recent").each {|article|
       article.css(".recent-box").each { |box|
@@ -61,6 +59,7 @@ class CrowderNews::Scraper
   ##
   def self.scrape_details(article_url)
     doc = Nokogiri::HTML(open(article_url))
+    
     article_info = {}
 
     article_info[:author] = doc.css("h2 span.lwc-author").text

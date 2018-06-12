@@ -1,13 +1,13 @@
 ##
 # => Handles all interfacing with our user
 ##
-class CrowderNews::CLI
+class CLI
   # => Articles array accessor
   attr_accessor :articles
 
   # => Intiates the program, scrapes the website and welcomes the user
   def initiate
-    CrowderNews::Scraper.initiate_scrape
+    Scraper.initiate_scrape
     puts "Welcome to Today on Crowder!"
     list_articles
   end
@@ -23,17 +23,17 @@ class CrowderNews::CLI
     puts ""
     if input == "recent"
       puts "Recent Articles: "
-      @articles = CrowderNews::Article.recents
+      @articles = Article.recents
       display_list(@articles)
       menu
     elsif input == "featured"
       puts "Featured Articles: "
-      @articles = CrowderNews::Article.featured
+      @articles = Article.featured
       display_list(@articles)
       menu
     elsif input == "both"
       puts "All articles: "
-      @articles = CrowderNews::Article.all
+      @articles = Article.all
       display_list(@articles)
       menu
     elsif input == "exit"
@@ -51,7 +51,7 @@ class CrowderNews::CLI
     articles.each.with_index(1) do |article, index|
       puts "#{index}. #{article.title}"
       if(article.excerpt != "")
-        puts "    #{article.excerpt[0...103]}..."
+        puts "\t#{article.excerpt[0...98]}..."
       end
     end
     puts ""
@@ -82,15 +82,11 @@ class CrowderNews::CLI
   ##
   def display_article(article)
     input = nil
-    puts ""
-    puts "#{article.title}"
-    puts ""
-    puts "Author: #{article.author} on #{article.date}: "
-    puts ""
-    puts "    #{article.body}"
+    puts "\n#{article.title}"
+    puts "\nAuthor: #{article.author} on #{article.date}: "
+    puts "\n\t#{article.body}"
     if article.youtube_links
-      puts ""
-      puts "Youtube Links:"
+      puts "\nYoutube Links:"
       article.youtube_links.each{ |link|
         puts link
       }
@@ -108,8 +104,7 @@ class CrowderNews::CLI
   # => Tells the user goodbye and exits program
   ##
   def goodbye
-    puts ""
-    puts "See you next time!"
+    puts "\nSee you next time!"
   end
 
 end

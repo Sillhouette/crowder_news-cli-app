@@ -1,7 +1,7 @@
 ##
 # => Handles Article object creation
 ##
-class CrowderNews::Article
+class Article
   # => Accessors for article details
   attr_accessor :title, :link, :excerpt, :type, :author, :date, :body, :youtube_links
 

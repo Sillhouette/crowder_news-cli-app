@@ -2,4 +2,4 @@
 
 require './lib/crowder_news'
 
-CrowderNews::CLI.new.initiate
+CLI.new.initiate
