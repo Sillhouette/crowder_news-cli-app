@@ -23,15 +23,18 @@ class CrowderNews::CLI
     puts ""
     if input == "recent"
       puts "Recent Articles: "
-      display_list(CrowderNews::Article.recents)
+      @articles = CrowderNews::Article.recents
+      display_list(@articles)
       menu
     elsif input == "featured"
       puts "Featured Articles: "
-      display_list(CrowderNews::Article.featured)
+      @articles = CrowderNews::Article.featured
+      display_list(@articles)
       menu
     elsif input == "both"
       puts "All articles: "
-      display_list(CrowderNews::Article.all)
+      @articles = CrowderNews::Article.all
+      display_list(@articles)
       menu
     elsif input == "exit"
       goodbye
