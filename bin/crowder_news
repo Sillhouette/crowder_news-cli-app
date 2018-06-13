@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require './lib/crowder_news'
+require_relative '../lib/crowder_news'
 
 CLI.new.initiate
