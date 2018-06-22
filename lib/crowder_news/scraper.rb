@@ -12,10 +12,15 @@ class Scraper
   def self.initiate_scrape
     Article.create_from_collection(self.scrape_featured)
     Article.create_from_collection(self.scrape_recent)
+    print 'Processing article details'
     Article.all.each {|article|
       details = self.scrape_details(article.link)
       article.add_details(details)
+      print '.'
+      sleep(0.05)
     }
+    puts ""
+    puts ""
   end
 
   ##
@@ -24,6 +29,7 @@ class Scraper
   def self.scrape_featured
     doc = Nokogiri::HTML(open(@@url))
     articles = []
+    print 'Processing featured articles'
     doc.css("div.lwc-featured").each {|featured_article|
       featured_article.css(".featured-box").each { |box|
         title = box.css("h3.featured-title a").text
@@ -31,8 +37,11 @@ class Scraper
         excerpt = box.css("p.lwc-excerpt").text
         type = "Featured"
         articles << {:title => title, :link => link, :excerpt => excerpt, :type => type}
+        print '.'
+        sleep(0.2)
       }
     }
+    puts ''
     articles
   end
 
@@ -42,6 +51,7 @@ class Scraper
   def self.scrape_recent
     doc = Nokogiri::HTML(open(@@url))
     articles = []
+    print 'Processing recent articles'
     doc.css("div.lwc-recent").each {|article|
       article.css(".recent-box").each { |box|
         title = box.css("h3.recent-title a").text
@@ -49,8 +59,11 @@ class Scraper
         type = "Recent"
         excerpt = ""
         articles << {:title => title, :link => link, :excerpt => excerpt, :type => type}
+        print '.'
+        sleep(0.2)
       }
     }
+    puts ''
     articles
   end
 
@@ -59,7 +72,7 @@ class Scraper
   ##
   def self.scrape_details(article_url)
     doc = Nokogiri::HTML(open(article_url))
-    
+
     article_info = {}
 
     article_info[:author] = doc.css("h2 span.lwc-author").text

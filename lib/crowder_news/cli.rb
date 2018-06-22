@@ -62,7 +62,7 @@ class CLI
   ##
   def menu
     input = nil
-    puts "Enter the number of the article you want to see, type list to list the articles again or type exit: "
+    puts "Enter the number of the article you want to see, type list to choose a new list of articles or type exit: "
     input = gets.strip.downcase
     if input.to_i > 0 && input.to_i < @articles.length + 1
       article = @articles[input.to_i - 1]
@@ -104,7 +104,7 @@ class CLI
   # => Tells the user goodbye and exits program
   ##
   def goodbye
-    puts "\nSee you next time!"
+    puts "See you next time!"
   end
 
 end
