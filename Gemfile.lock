@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    crowder_news (0.1.0)
+    crowder_news (0.1.6)
       nokogiri
 
 GEM
