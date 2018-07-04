@@ -7,9 +7,6 @@ class Article
 
   # => Set each of our Class arrays to a blank array
   @@all = []
-  @@recents = []
-  @@featured = []
-
   ##
   # => Creates new Article objects
   ##
@@ -19,11 +16,6 @@ class Article
     @excerpt = article_hash[:excerpt]
     @type = article_hash[:type]
 
-    if @type.downcase == "recent"
-      @@recents << self
-    elsif @type.downcase == "featured"
-      @@featured << self
-    end
     @@all << self;
   end
 
@@ -49,16 +41,6 @@ class Article
   # => Getter returns all of our article objects
   def self.all
     @@all;
-  end
-
-  # => Getter returns all of our recent articles
-  def self.recents
-    @@recents
-  end
-
-  # => Getter returns all of our featured articles
-  def self.featured
-    @@featured
   end
 
 end

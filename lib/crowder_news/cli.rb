@@ -23,12 +23,12 @@ class CLI
     puts ""
     if input == "recent"
       puts "Recent Articles: "
-      @articles = Article.recents
+      @articles = Article.all.map { |article| article.type == "Recent" ? article : nil}.compact
       display_list(@articles)
       menu
     elsif input == "featured"
       puts "Featured Articles: "
-      @articles = Article.featured
+      @articles = Article.all.map {|article| article.type == "Featured" ? article : nil}.compact
       display_list(@articles)
       menu
     elsif input == "both"
