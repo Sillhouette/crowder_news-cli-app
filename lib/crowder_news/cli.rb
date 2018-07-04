@@ -8,7 +8,7 @@ class CLI
   # => Intiates the program, scrapes the website and welcomes the user
   def initiate
     Scraper.initiate_scrape
-    puts "Welcome to Today on Crowder!"
+    puts "\n\nWelcome to Today on Crowder! To exit type 'exit'."
     list_articles
   end
 
@@ -17,7 +17,7 @@ class CLI
   ##
   def list_articles
     input = nil
-    choices = 'Choose one: recent, featured, or both. To exit type "exit".'
+    choices = "\nWhat kind of article would you like to see? (recent, featured, or both)"
     puts choices
     input = gets.strip.downcase
     puts ""
@@ -62,7 +62,7 @@ class CLI
   ##
   def menu
     input = nil
-    puts "Enter the number of the article you want to see, type list to choose a new list of articles or type exit: "
+    puts "Enter the number of the article you want to see, type 'list' to choose a new list of articles or type 'exit': "
     input = gets.strip.downcase
     if input.to_i > 0 && input.to_i < @articles.length + 1
       article = @articles[input.to_i - 1]
@@ -91,7 +91,7 @@ class CLI
         puts link
       }
     end
-    puts 'Press any key to find another article or "exit" to exit.'
+    puts "Press any key to find another article or 'exit' to exit."
     input = gets.strip.downcase
     if input == "exit"
       goodbye
@@ -104,7 +104,7 @@ class CLI
   # => Tells the user goodbye and exits program
   ##
   def goodbye
-    puts "See you next time!"
+    puts "\nSee you next time!"
   end
 
 end

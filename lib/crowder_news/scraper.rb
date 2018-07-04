@@ -12,24 +12,29 @@ class Scraper
   def self.initiate_scrape
     Article.create_from_collection(self.scrape_featured)
     Article.create_from_collection(self.scrape_recent)
-    print 'Processing article details'
+
+    spinner = TTY::Spinner.new("[:spinner] Processing article details...", format: :dots)
+    spinner.auto_spin
+
     Article.all.each {|article|
       details = self.scrape_details(article.link)
       article.add_details(details)
-      print '.'
-      sleep(0.05)
     }
-    puts ""
-    puts ""
+
+    spinner.success("\n\tArticle details processed!")
   end
 
   ##
   # => Scrapes the featured articles from LwC
   ##
   def self.scrape_featured
+    spinner = TTY::Spinner.new("[:spinner] Obtaining featured articles...", format: :dots)
+    spinner.auto_spin
+
     doc = Nokogiri::HTML(open(@@url))
+
     articles = []
-    print 'Processing featured articles'
+
     doc.css("div.lwc-featured").each {|featured_article|
       featured_article.css(".featured-box").each { |box|
         title = box.css("h3.featured-title a").text
@@ -37,11 +42,9 @@ class Scraper
         excerpt = box.css("p.lwc-excerpt").text
         type = "Featured"
         articles << {:title => title, :link => link, :excerpt => excerpt, :type => type}
-        print '.'
-        sleep(0.2)
       }
     }
-    puts ''
+    spinner.success("\n\tFeatured articles obtained!")
     articles
   end
 
@@ -49,9 +52,13 @@ class Scraper
   # => Scrapes the recent articles from LwC
   ##
   def self.scrape_recent
+    spinner = TTY::Spinner.new("[:spinner] Obtaining featured articles...", format: :dots)
+    spinner.auto_spin
+
     doc = Nokogiri::HTML(open(@@url))
+
     articles = []
-    print 'Processing recent articles'
+
     doc.css("div.lwc-recent").each {|article|
       article.css(".recent-box").each { |box|
         title = box.css("h3.recent-title a").text
@@ -59,11 +66,9 @@ class Scraper
         type = "Recent"
         excerpt = ""
         articles << {:title => title, :link => link, :excerpt => excerpt, :type => type}
-        print '.'
-        sleep(0.2)
       }
     }
-    puts ''
+    spinner.success("\n\tRecent articles obtained!")
     articles
   end
 
