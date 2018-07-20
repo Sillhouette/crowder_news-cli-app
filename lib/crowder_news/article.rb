@@ -15,8 +15,6 @@ class Article
     @link = article_hash[:link]
     @excerpt = article_hash[:excerpt]
     @type = article_hash[:type]
-
-    @@all << self;
   end
 
   ##
@@ -24,7 +22,8 @@ class Article
   ##
   def self.create_from_collection(articles_array)
     articles_array.each { |hash|
-      self.new(hash)
+      article = self.new(hash)
+      @@all << article;
     }
   end
 
